@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberForest | Digital Wilderness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            color: #e2e8f0;
+            background-image: url('https://img.freepik.com/premium-vector/lonely-girl-with-bike-standing-near-tree-night_116220-94.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.8) 100%);
+            z-index: -1;
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+        }
+        
+        .neon-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 
+                        inset 0 0 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .cyber-bg {
+            position: relative;
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .input-field:focus {
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+            border-color: rgba(99, 102, 241, 0.7);
+            background: rgba(15, 23, 42, 0.6);
+        }
+        
+        .neon-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+            color: #e2e8f0;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .neon-input:focus {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            border-color: rgba(99, 102, 241, 0.8);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+        }
+        
+        .glow-btn {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+        
+        .glow-btn:hover {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+        }
+        
+        .neon-btn {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(124, 58, 237, 0.9) 100%);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-btn:hover {
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.8);
+        }
+        
+        .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+        
+        .neon-btn:hover::before {
+            left: 100%;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6366f1;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .cyber-line {
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            background: rgba(99, 102, 241, 0.3);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .cyber-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 50px;
+            background: linear-gradient to bottom, rgba(99, 102, 241, 0), rgba(99, 102, 241, 0.8));
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: -50px;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+        
+        .section {
+            min-height: 100vh;
+            padding-top: 80px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            transition: all 0.3s ease;
+            transform: scale(1);
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+        }
+        
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(37, 211, 102, 0.7);
+        }
+        
+        .hidden-section {
+            display: none;
+        }
+        
+        .active-section {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .price-tag {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        
+        .price-tag::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px dashed rgba(99, 102, 241, 0.5);
+            border-radius: 50px;
+            animation: rotate 10s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .neon-title {
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .neon-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0) 0%, rgba(99, 102, 241, 0.8) 50%, rgba(99, 102, 241, 0) 100%);
+        }
+        
+        .social-btn {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+        
+        .grecaptcha-badge {
+            opacity: 0.8;
+        }
+        
+        /* New styles for the authorization section */
+        .auth-section {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .auth-icon {
+            font-size: 5rem;
+            color: #25D366;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .submit-btn {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .submit-btn.active {
+            opacity: 1;
+            cursor: pointer;
+        }
+        
+        /* Terms and Conditions styles */
+        .terms-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .terms-section {
+            margin-bottom: 2rem;
+        }
+        
+        .terms-title {
+            color: #6366f1;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .terms-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.8), transparent);
+        }
+        
+        .terms-content {
+            line-height: 1.6;
+        }
+        
+        .terms-list {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .terms-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(99, 102, 241, 0.4);
+        }
+    </style>
+</head>
+<body class="cyber-bg">
+    <!-- Cyberpunk Grid Background -->
+    <div class="cyber-grid"></div>
+    <div class="cyber-line"></div>
+    
+    <!-- Navigation -->
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center relative z-50">
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-indigo-500 rounded-full glow-btn"></div>
+            <span class="text-xl font-bold glow-text">CyberForest</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+            <a href="#home" class="nav-link" onclick="showSection('home')">Home</a>
+            <a href="#features" class="nav-link" onclick="showSection('features')">Features</a>
+            <a href="#pricing" class="nav-link" onclick="showSection('pricing')">Pricing</a>
+            <a href="#about" class="nav-link" onclick="showSection('about')">About</a>
+        </div>
+        <div class="flex space-x-4">
+            <button class="px-4 py-2 rounded-full border border-indigo-400 text-indigo-100 hover:bg-indigo-500 hover:text-white transition duration-300 glow-btn" onclick="showSection('login')">
+                Sign In
+            </button>
+            <button class="px-4 py-2 rounded-full bg-indigo-600 text-white hover:bg-indigo-700 transition duration-300 glow-btn" onclick="showSection('register')">
+                Register
+            </button>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active-section">
+        <div class="container mx-auto px-6 py-24 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mb-12 md:mb-0 relative z-10">
+                <h1 class="text-5xl font-bold mb-6 glow-text">Explore the <span class="text-indigo-400">Digital Wilderness</span></h1>
+                <p class="text-xl text-gray-300 mb-8">CyberForest offers you the most advanced digital experience in the metaverse. Join our community of explorers today.</p>
+                <div class="flex space-x-4">
+                    <button class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium text-white transition duration-300 shadow-lg glow-btn hover:glow-btn" onclick="showSection('register')">
+                        Get Started
+                    </button>
+                    <button class="px-6 py-3 border border-indigo-400 text-indigo-400 hover:bg-indigo-500 hover:text-white rounded-lg font-medium transition duration-300 glow-btn" onclick="showSection('features')">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+            <div class="md:w-1/2 glass-card rounded-2xl p-8 relative z-10">
+                <div class="relative h-64 w-full">
+                    <div class="absolute inset-0 bg-indigo-900 opacity-20 rounded-xl"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fas fa-globe text-6xl text-indigo-400 animate-pulse"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section hidden-section">
+        <div class="container mx-auto px-6 py-24">
+            <h2 class="text-4xl font-bold text-center mb-16 glow-text">Our <span class="text-indigo-400">Features</span></h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-2xl p-8 hover:transform hover:scale-105 transition duration-300">
+                    <div class="text-indigo-400 text-4xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Advanced Security</h3>
+                    <p class="text-gray-300">Military-grade encryption protects your digital assets in the CyberForest wilderness.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 hover:transform hover:scale-105 transition duration-300">
+                    <div class="text-indigo-400 text-4xl mb-4">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Lightning Speed</h3>
+                    <p class="text-gray-300">Experience near-zero latency with our optimized network infrastructure.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 hover:transform hover:scale-105 transition duration-300">
+                    <div class="text-indigo-400 text-4xl mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Community</h3>
+                    <p class="text-gray-300">Join thousands of explorers in our thriving digital ecosystem.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section hidden-section">
+        <div class="container mx-auto px-6 py-24">
+            <h2 class="text-4xl font-bold text-center mb-16 glow-text">Simple <span class="text-indigo-400">Pricing</span></h2>
+            <div class="glass-card rounded-2xl p-12 max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <div class="price-tag inline-block mb-6">
+                        $50/month
+                    </div>
+                    <p class="text-gray-300">One simple plan with all features included</p>
+                </div>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-300">Full access to CyberForest</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+        <span class="text-gray-300">24/7 customer support</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-300">Priority updates</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-300">Exclusive community access</span>
+                    </li>
+                </ul>
+                <button class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium text-white transition duration-300 shadow-lg glow-btn hover:glow-btn" onclick="showSection('register')">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section hidden-section">
+        <div class="container mx-auto px-6 py-24">
+            <h2 class="text-4xl font-bold text-center mb-16 glow-text">About <span class="text-indigo-400">CyberForest</span></h2>
+            <div class="glass-card rounded-2xl p-12 max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-8 md:mb-0">
+                        <div class="w-32 h-32 bg-indigo-900 rounded-full mx-auto flex items-center justify-center">
+                            <i class="fas fa-tree text-5xl text-indigo-400"></i>
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 md:pl-12">
+                        <h3 class="text-2xl font-bold mb-4">Our Story</h3>
+                        <p class="text-gray-300 mb-6">
+                            Founded in 2023, CyberForest was born from a vision to create a digital wilderness where technology and nature converge. 
+                            Our platform offers a unique metaverse experience unlike any other.
+                        </p>
+                        <p class="text-gray-300">
+                            With over 50,000 active users, we're proud to be at the forefront of the digital frontier, pushing boundaries and exploring new possibilities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login" class="section hidden-section">
+        <div class="container mx-auto px-6 py-24 flex justify-center items-center">
+            <!-- Neon Card -->
+            <div class="neon-card rounded-2xl p-8 w-full max-w-md relative overflow-hidden">
+                <!-- Animated background elements -->
+                <div class="absolute -top-10 -left-10 w-20 h-20 bg-indigo-500 rounded-full filter blur-3xl opacity-20"></div>
+                <div class="absolute -bottom-10 -right-10 w-20 h-20 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
+                
+                <div class="text-center mb-8 relative z-10">
+                    <h1 class="text-3xl font-bold mb-2 neon-title">Welcome Back</h1>
+                    <p class="text-gray-300">Sign in to access your digital wilderness</p>
+                </div>
+                
+                <form class="space-y-6 relative z-10">
+                    <!-- Email Field -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-indigo-400"></i>
+                        </div>
+                        <input type="email" class="neon-input w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Username or Email">
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-indigo-400"></i>
+                        </div>
+                        <input type="password" class="neon-input w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Password">
+                    </div>
+                    
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-700 rounded bg-gray-800">
+                            <label for="remember" class="ml-2 block text-sm text-gray-300">
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="#" class="font-medium text-indigo-400 hover:text-indigo-300">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- reCAPTCHA -->
+                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full py-3 px-4 rounded-lg font-medium text-white transition duration-300 neon-btn">
+                        Sign In
+                    </button>
+                    
+                    <!-- Divider -->
+                    <div class="relative flex items-center justify-center">
+                        <div class="flex-grow border-t border-gray-700"></div>
+                        <span class="flex-shrink mx-4 text-gray-500 text-sm">OR</span>
+                        <div class="flex-grow border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Social Login -->
+                    <div class="flex justify-center space-x-4">
+                        <button type="button" class="p-3 rounded-full bg-gray-800 hover:bg-gray-700 social-btn">
+                            <i class="fab fa-google text-red-500 text-xl"></i>
+                        </button>
+                        <button type="button" class="p-3 rounded-full bg-gray-800 hover:bg-gray-700 social-btn">
+                            <i class="fab fa-github text-gray-300 text-xl"></i>
+                        </button>
+                        <button type="button" class="p-3 rounded-full bg-gray-800 hover:bg-gray-700 social-btn">
+                            <i class="fab fa-twitter text-blue-400 text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Sign Up Link -->
+                    <div class="text-center text-sm text-gray-500">
+                        Don't have an account? <a href="#" class="text-indigo-400 hover:underline" onclick="showSection('register')">Sign up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Register Section -->
+    <section id="register" class="section hidden-section">
+        <div class="container mx-auto px-6 py-24 flex justify-center items-center">
+            <!-- Neon Card -->
+            <div class="neon-card rounded-2xl p-8 w-full max-w-md relative overflow-hidden">
+                <!-- Animated background elements -->
+                <div class="absolute -top-10 -left-10 w-20 h-20 bg-indigo-500 rounded-full filter blur-3xl opacity-20"></div>
+                <div class="absolute -bottom-10 -right-10 w-20 h-20 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
+                
+                <div class="text-center mb-8 relative z-10">
+                    <h1 class="text-3xl font-bold mb-2 neon-title">Join CyberForest</h1>
+                    <div class="price-tag inline-block mt-4">
+                        $50/month
+                    </div>
+                    <p class="text-gray-300 mt-4">Create your account to explore the digital wilderness</p>
+                </div>
+                
+                <form id="registerForm" class="space-y-6 relative z-10">
+                    <!-- Name Field -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-id-card text-indigo-400"></i>
+                        </div>
+                        <input type="text" class="neon-input w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Full Name" required>
+                    </div>
+                    
+                    <!-- Email Field -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-indigo-400"></i>
+                        </div>
+                        <input type="email" class="neon-input w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Email Address" required>
+                    </div>
+                    
+                    <!-- Phone Field -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-phone text-indigo-400"></i>
+                        </div>
+                        <input type="tel" class="neon-input w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Phone Number" required>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-indigo-400"></i>
+                        </div>
+                        <input type="password" class="neon-input w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Create Password" required>
+                    </div>
+                    
+                    <!-- reCAPTCHA -->
+                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                    
+                    <!-- Submit Button -->
+                    <button type="button" id="submitBtn" class="w-full py-3 px-4 rounded-lg font-medium text-white transition duration-300 neon-btn submit-btn" disabled>
+                        Complete Registration
+                    </button>
+                    
+                    <!-- Divider -->
+                    <div class="relative flex items-center justify-center">
+                        <div class="flex-grow border-t border-gray-700"></div>
+                        <span class="flex-shrink mx-4 text-gray-500 text-sm">OR</span>
+                        <div class="flex-grow border-t border-gray-700"></div>
+                    </div>
+                    
+                    <!-- Already have account -->
+                    <div class="text-center text-sm text-gray-500">
+                        Already have an account? <a href="#" class="text-indigo-400 hover:underline" onclick="showSection('login')">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authorization Section -->
+    <section id="authorization" class="section hidden-section">
+        <div class="container mx-auto px-6 py-24 flex justify-center items-center">
+            <div class="glass-card rounded-2xl p-12 w-full max-w-md relative overflow-hidden text-center">
+                <div class="auth-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 neon-title">Authorization Required</h2>
+                <p class="text-gray-300 mb-8">
+                    Your registration is almost complete! Please click the WhatsApp button below to request authorization. 
+                    Our team will review your information and get back to you shortly.
+                </p>
+                <button class="whatsapp-btn py-3 px-6 rounded-lg font-medium text-white transition duration-300 flex items-center justify-center mx-auto" onclick="sendWhatsAppMessage()">
+                    <i class="fab fa-whatsapp text-xl mr-2"></i> Contact via WhatsApp
+                </button>
+                <p class="text-gray-400 text-sm mt-6">
+                    Please wait for our confirmation before proceeding.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terms and Conditions Section -->
+    <section id="terms" class="section hidden-section">
+        <div class="container mx-auto px-6 py-12">
+            <div class="glass-card rounded-2xl p-8 terms-container">
+                <h1 class="text-4xl font-bold mb-8 text-center neon-title">Terms and Conditions</h1>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">1. Acceptance of Terms</h2>
+                    <div class="terms-content">
+                        <p>By accessing and using CyberForest ("the Service"), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these terms, please do not use this service.</p>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">2. Description of Service</h2>
+                    <div class="terms-content">
+                        <p>CyberForest provides users with access to a digital wilderness experience, including but not limited to virtual environments, social interactions, and digital asset management.</p>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">3. User Responsibilities</h2>
+                    <div class="terms-content">
+                        <p>As a user of this Service, you agree to the following:</p>
+                        <ul class="terms-list">
+                            <li>You are responsible for maintaining the confidentiality of your account information</li>
+                            <li>You will not use the Service for any illegal or unauthorized purpose</li>
+                            <li>You will not interfere with or disrupt the Service or servers connected to the Service</li>
+                            <li>You will not attempt to gain unauthorized access to any part of the Service</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">4. Payment and Subscription</h2>
+                    <div class="terms-content">
+                        <p>The Service requires payment of a monthly subscription fee. By subscribing, you authorize us to charge your payment method on a recurring basis.</p>
+                        <ul class="terms-list">
+                            <li>All fees are non-refundable except as required by law</li>
+                            <li>We may change the fees for the Service at any time with 30 days notice</li>
+                            <li>You may cancel your subscription at any time</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">5. Intellectual Property</h2>
+                    <div class="terms-content">
+                        <p>All content included on the Service, such as text, graphics, logos, button icons, images, audio clips, digital downloads, and software, is the property of CyberForest or its content suppliers and protected by international copyright laws.</p>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">6. Limitation of Liability</h2>
+                    <div class="terms-content">
+                        <p>CyberForest shall not be liable for any direct, indirect, incidental, special, consequential or exemplary damages, including but not limited to damages for loss of profits, goodwill, use, data or other intangible losses resulting from:</p>
+                        <ul class="terms-list">
+                            <li>The use or inability to use the service</li>
+                            <li>Unauthorized access to or alteration of your transmissions or data</li>
+                            <li>Statements or conduct of any third party on the service</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="terms-section">
+                    <h2 class="text-2xl font-bold terms-title">7. Modifications to Terms</h2>
+                    <div class="terms-content">
+                        <p>CyberForest reserves the right to modify these terms at any time. We will notify users of any changes through the Service or via email. Your continued use of the Service after such changes constitutes your acceptance of the new terms.</p>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <button onclick="showSection('home')" class="back-btn">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="container mx-auto px-6 py-12 mt-12 border-t border-gray-800 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-2 mb-6 md:mb-0">
+                <div class="w-8 h-8 bg-indigo-500 rounded-full glow-btn"></div>
+                <span class="text-xl font-bold glow-text">CyberForest</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-indigo-400 transition duration-300">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-indigo-400 transition duration-300">
+                    <i class="fab fa-twitter text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-indigo-400 transition duration-300">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-indigo-400 transition duration-300">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-gray-500 text-sm glow-text">
+            © 2023 CyberForest. All rights reserved. | 
+            <a href="#" class="text-indigo-400 hover:underline" onclick="showSection('terms')">Terms and Conditions</a>
+        </div>
+    </div>
+    </footer>
+
+    <!-- Cyberpunk Scan Line Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cyberLine = document.querySelector('.cyber-line');
+            
+            function moveLine() {
+                const randomX = Math.random() * 20 + 40; // Between 40% and 60%
+                cyberLine.style.left = `${randomX}%`;
+                
+                setTimeout(moveLine, 8000);
+            }
+            
+            moveLine();
+
+            // Form validation for registration
+            const registerForm = document.getElementById('registerForm');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (registerForm) {
+                const inputs = registerForm.querySelectorAll('input[required]');
+                
+                inputs.forEach(input => {
+                    input.addEventListener('input', checkForm);
+                });
+                
+                // Check reCAPTCHA
+                if (typeof grecaptcha !== 'undefined') {
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', {action: 'submit'}).then(function(token) {
+                            checkForm();
+                        });
+                    });
+                }
+                
+                // Submit button event
+                submitBtn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        showSection('authorization');
+                    }
+                });
+            }
+            
+            function checkForm() {
+                let allFilled = true;
+                const inputs = registerForm.querySelectorAll('input[required]');
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+                
+                // Check if reCAPTCHA is filled (simplified check)
+                const recaptchaResponse = grecaptcha.getResponse();
+                const recaptchaFilled = recaptchaResponse.length > 0;
+                
+                if (allFilled && recaptchaFilled) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('submit-btn');
+                    submitBtn.classList.add('active');
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('submit-btn');
+                    submitBtn.classList.remove('active');
+                }
+            }
+        });
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden-section');
+                section.classList.remove('active-section');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.remove('hidden-section');
+                section.classList.add('active-section');
+                
+                // Scroll to top of section
+                window.scrollTo({
+                    top: section.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Update URL hash
+            if (sectionId !== 'login' && sectionId !== 'register' && sectionId !== 'authorization' && sectionId !== 'terms') {
+                window.location.hash = sectionId;
+            } else {
+                history.replaceState(null, null, ' ');
+            }
+        }
+        
+        function sendWhatsAppMessage() {
+            const phoneNumber = "+527751468771";
+            const message = "Quiero informes del CiberForest y solicito autorización para mi registro";
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+        
+        // Handle initial page load with hash
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const sectionId = window.location.hash.substring(1);
+                showSection(sectionId);
+            }
+        });
+    </script>
+</body>
+</html>
